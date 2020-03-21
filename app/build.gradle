@@ -1,0 +1,74 @@
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+apply plugin: "kotlin-android-extensions"
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.hyejineee.hwahae"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+}
+
+dependencies {
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    def lifecycle_version = "2.1.0"
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:1.0.2"
+    implementation "androidx.core:core-ktx:1.0.2"
+    implementation "androidx.constraintlayout:constraintlayout:1.1.3"
+
+    androidTestImplementation "androidx.test:runner:1.1.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.1.1"
+
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+
+    implementation "com.squareup.retrofit2:retrofit:2.7.1"
+    implementation "com.google.code.gson:gson:2.8.6"
+    implementation "com.squareup.retrofit2:converter-gson:2.7.1"
+
+    implementation "com.github.bumptech.glide:glide:4.11.0"
+    implementation "jp.wasabeef:glide-transformations:4.0.0"
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "com.google.android.material:material:1.0.0"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3"
+    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
+
+    implementation "org.koin:koin-androidx-viewmodel:2.0.1"
+
+    implementation "org.koin:koin-test:2.0.1"
+    implementation "org.koin:koin-core:2.0.1"
+    implementation "org.koin:koin-androidx-scope:2.0.1"
+
+    testImplementation "org.junit.jupiter:junit-jupiter:5.6.0"
+    testImplementation "org.assertj:assertj-core:3.11.1"
+    testImplementation "org.mockito:mockito-core:3.2.4"
+
+    implementation "com.jakewharton.rxbinding3:rxbinding:3.1.0"
+    implementation 'com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:3.1.0'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03"
+}

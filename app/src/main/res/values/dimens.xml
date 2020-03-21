@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="notice_size">14dp</dimen>
+    <dimen name="list_item_size">14dp</dimen>
+    <dimen name="product_title_size">32dp</dimen>
+    <dimen name="product_price_size">20dp</dimen>
+    <dimen name="product_description_size">16dp</dimen>
+    <dimen name="text_top_botton_padding">16dp</dimen>
+</resources>

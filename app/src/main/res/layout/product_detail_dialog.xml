@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:binding="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="product"
+            type="com.hyejineee.hwahae.model.ProductDetail" />
+
+        <variable
+            name="product_detail_view_model"
+            type="com.hyejineee.hwahae.mViewModel.ProductDetailViewModel" />
+
+        <variable
+            name="dialog"
+            type="com.hyejineee.hwahae.mView.ProductDetailDialog" />
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_background">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/product_img_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/product_img"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_margin="6dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintDimensionRatio="H,5:5"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:loadImage="@{product.full_size_image}" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:id="@+id/product_detail_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/product_img_layout"
+                        android:orientation="vertical"
+                        android:paddingLeft="24dp"
+                        android:paddingTop="34dp"
+                        android:paddingRight="24dp"
+                        android:paddingBottom="30dp">
+
+                        <TextView
+                            android:id="@+id/item_name_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/notosans_cjk_kr_black"
+                            android:text="@{product.title}"
+                            android:textColor="@color/balckTypo"
+                            android:textSize="@dimen/product_title_size" />
+
+                        <TextView
+                            android:id="@+id/item_describe_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/notosans_cjk_kr_black"
+                            android:text="@{product.price+'원'}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/product_price_size" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="32dp"
+                            android:background="#ECECF5" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:fontFamily="@font/notosans_cjk_kr_bold"
+                            android:text="@{product.description}"
+                            android:textColor="@color/balckTypo"
+                            android:textSize="@dimen/product_description_size" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="60dp"
+                            android:layout_marginBottom="100dp"
+                            android:background="@drawable/gray_background"
+                            android:padding="@dimen/text_top_botton_padding"
+                            android:text="@string/caution" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/refresh_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:onClick="@{_->dialog.reRequest()}"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <include layout="@layout/refresh_button_layout" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#95000000"
+                    binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}">
+
+                    <include layout="@layout/loading_layout" />
+                </FrameLayout>
+
+            </RelativeLayout>
+        </ScrollView>
+
+        <ImageButton
+            android:id="@+id/close_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/text_top_botton_padding"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/ic_cancel"
+            android:onClick="@{()->dialog.closeDialog()}"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buy_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="30dp"
+            android:paddingTop="@dimen/text_top_botton_padding"
+            android:paddingBottom="@dimen/text_top_botton_padding"
+            android:text="구매하기"
+            android:visibility="invisible"
+            app:cornerRadius="20dp"
+            binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}" />
+
+    </RelativeLayout>
+
+
+</layout>
