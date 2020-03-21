@@ -15,15 +15,15 @@ import io.reactivex.subjects.Subject
 @SuppressLint("CheckResult")
 @BindingAdapter("loadingVisible")
 fun setVisible(view: View, isVisible: Subject<Boolean>) {
-    isVisible.subscribe {
+    isVisible.subscribe {visible ->
         when (view) {
             is FrameLayout -> {
-                view.isVisible = it
-                (view.parent as ViewGroup).findViewById<LinearLayout>(R.id.refresh_btn)?.isVisible =
-                    false
+                view.visibility = if(visible) View.VISIBLE else View.GONE
+                (view.parent as ViewGroup).findViewById<LinearLayout>(R.id.refresh_btn)?.visibility =
+                    View.GONE
             }
             else -> {
-                view.isVisible = !it
+                view.visibility = if(visible) View.GONE else View.VISIBLE
                 view.isClickable = false
             }
         }
@@ -33,9 +33,10 @@ fun setVisible(view: View, isVisible: Subject<Boolean>) {
 @SuppressLint("CheckResult")
 @BindingAdapter("noItemNoticeVisible")
 fun setNoItemNoticeViewVisible(view: ViewGroup, isVisible: Subject<Boolean>) {
-    isVisible.subscribe {
-        view.isVisible = it
-        (view.parent as ViewGroup).findViewById<LinearLayout>(R.id.refresh_btn)?.isVisible = false
+    isVisible.subscribe {visible ->
+        view.visibility = if(visible) View.VISIBLE else View.GONE
+        (view.parent as ViewGroup).findViewById<LinearLayout>(R.id.refresh_btn)?.visibility =
+        View.GONE
         (view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
             .hideSoftInputFromWindow(view.getWindowToken(), 0)
     }

@@ -1,5 +1,6 @@
 package com.hyejineee.hwahae.mView
 
+import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -46,8 +47,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             productViewModel.onErrorSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    viewDataBinding.refreshBtn.isVisible = true
-                    viewDataBinding.itemGridView.isVisible = false
+                    viewDataBinding.refreshBtn.visibility = View.VISIBLE
+                    viewDataBinding.itemGridView.visibility = View.GONE
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 }
         )
@@ -57,7 +58,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     fun reRequest() {
         productViewModel.getProducts()
-        viewDataBinding.refreshBtn.isVisible = false
-        viewDataBinding.itemGridView.isVisible = true
+        viewDataBinding.refreshBtn.visibility = View.GONE
+        viewDataBinding.itemGridView.visibility =  View.VISIBLE
     }
 }

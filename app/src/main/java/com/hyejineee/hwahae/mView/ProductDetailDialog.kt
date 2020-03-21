@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -74,13 +75,13 @@ class ProductDetailDialog(
     override fun initSubscribe() {
         viewModel.getProductDetail(product_id)
         viewModel.addDisposable(viewModel.productDeailSubject.subscribe {
-            viewDataBinding.productDetailLayout.isVisible = true
+            viewDataBinding.productDetailLayout.visibility = View.VISIBLE
             viewDataBinding.product = it
         })
         viewModel.addDisposable(viewModel.onErrorSubject.subscribe {
-            viewDataBinding.refreshBtn.isVisible = true
-            viewDataBinding.productDetailLayout.isVisible = false
-            viewDataBinding.buyButton.isVisible = false
+            viewDataBinding.refreshBtn.visibility = View.VISIBLE
+            viewDataBinding.productDetailLayout.visibility = View.GONE
+            viewDataBinding.buyButton.visibility = View.GONE
             Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
         })
 
@@ -88,6 +89,6 @@ class ProductDetailDialog(
 
     fun reRequest() {
         viewModel.getProductDetail(product_id)
-        viewDataBinding.refreshBtn.isVisible = false
+        viewDataBinding.refreshBtn.visibility = View.GONE
     }
 }
