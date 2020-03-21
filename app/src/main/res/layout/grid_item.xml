@@ -7,7 +7,7 @@
             type="com.hyejineee.hwahae.model.Product" />
         <variable
             name="view_model"
-            type="com.hyejineee.hwahae.mViewModel.ProductDetailViewModel" />
+            type="com.hyejineee.hwahae.viewModels.ProductDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,19 +1,16 @@
-package com.hyejineee.hwahae.mViewModel
+package com.hyejineee.hwahae.viewModels
 
 import android.annotation.SuppressLint
 import com.hyejineee.hwahae.model.Product
-import com.hyejineee.hwahae.network.ProductRepo
-import com.hyejineee.hwahae.util.BaseSchedulers
-import com.hyejineee.hwahae.util.mScheduler
+import com.hyejineee.hwahae.datasource.ProductDataSource
 import io.reactivex.Observable
 import io.reactivex.Observable.merge
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 
 class ProductViewModel(
-    private val productRepo: ProductRepo,
-    private val scheduler: BaseSchedulers
-) : BaseViewModel() {
+    private val productDataSource: ProductDataSource
+)  {
 
     var skinType: String? = null
     var keyword: String? = null
@@ -64,7 +61,7 @@ class ProductViewModel(
         val skinType = if (this.skinType === "all") null else this.skinType
         val keyword = if (this.keyword == "") null else this.keyword
 
-        return productRepo.getProductList(skinType, pageNum, keyword)
+        return productDataSource.getProductList(skinType, pageNum, keyword)
             .subscribeOn(scheduler.io())
             .observeOn(scheduler.ui())
             .doOnError { throwable -> onErrorSubject.onNext(throwable) }

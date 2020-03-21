@@ -1,4 +1,4 @@
-package com.hyejineee.hwahae.network.ServerMessageCode
+package com.hyejineee.hwahae.datasource.ServerMessageCode
 
 enum class BodyMessage(val message: String) {
     NO_DATA("ProductNotFound - 데이터가 비어있습니다!"),

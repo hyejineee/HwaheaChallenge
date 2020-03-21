@@ -1,10 +1,10 @@
 package com.hyejineee.hwahae.util
 
-import com.hyejineee.hwahae.network.ProductRepo
-import com.hyejineee.hwahae.network.ProductRepoImpl
-import com.hyejineee.hwahae.network.APIService
-import com.hyejineee.hwahae.mViewModel.ProductDetailViewModel
-import com.hyejineee.hwahae.mViewModel.ProductViewModel
+import com.hyejineee.hwahae.datasource.ProductDataSource
+import com.hyejineee.hwahae.datasource.ProductRemoteDataSource
+import com.hyejineee.hwahae.datasource.APIService
+import com.hyejineee.hwahae.viewModels.ProductDetailViewModel
+import com.hyejineee.hwahae.viewModels.ProductViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -12,10 +12,6 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-
-val androidScheduler = module {
-    single<BaseSchedulers> { mScheduler() }
-}
 
 fun getNetworkModule(baseUrl: String) = module {
     single {
@@ -37,20 +33,19 @@ fun getNetworkModule(baseUrl: String) = module {
             .build()
             .create(APIService::class.java)
     }
-    single<ProductRepo> { ProductRepoImpl(get()) }
+    single<ProductDataSource> { ProductRemoteDataSource(get()) }
 }
 
 val productViewModelModule = module {
-    viewModel { ProductViewModel(get(), get()) }
+    viewModel { ProductViewModel(get()) }
 }
 
 val productDetailViewModelModule = module {
-    viewModel { ProductDetailViewModel(get(), get()) }
+    viewModel { ProductDetailViewModel(get()) }
 }
 
 
 val mModules = listOf(
-    androidScheduler,
     getNetworkModule("https://6uqljnm1pb.execute-api.ap-northeast-2.amazonaws.com"),
     productViewModelModule,
     productDetailViewModelModule

@@ -1,9 +1,9 @@
-package com.hyejineee.hwahae.mView.bindingAdapter
+package com.hyejineee.hwahae.views.bindingAdapter
 
 import android.annotation.SuppressLint
 import android.widget.EditText
 import androidx.databinding.BindingAdapter
-import com.hyejineee.hwahae.mViewModel.ProductViewModel
+import com.hyejineee.hwahae.viewModels.ProductViewModel
 import com.jakewharton.rxbinding3.widget.textChangeEvents
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit

@@ -1,14 +1,12 @@
-package com.hyejineee.hwahae.mViewModel
+package com.hyejineee.hwahae.viewModels
 
 import android.annotation.SuppressLint
 import com.hyejineee.hwahae.model.ProductDetail
-import com.hyejineee.hwahae.network.ProductRepo
-import com.hyejineee.hwahae.util.BaseSchedulers
+import com.hyejineee.hwahae.datasource.ProductDataSource
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 
-class ProductDetailViewModel(val productRepo: ProductRepo, val scheduler: BaseSchedulers) :
-    BaseViewModel() {
+class ProductDetailViewModel(val productDataSource: ProductDataSource) {
 
     val productDeailSubject: Subject<ProductDetail> = PublishSubject.create()
     val onErrorSubject: Subject<Throwable> = PublishSubject.create()
@@ -18,7 +16,7 @@ class ProductDetailViewModel(val productRepo: ProductRepo, val scheduler: BaseSc
     fun getProductDetail(productId: Int) {
         isLoadingSubject.onNext(true)
         addDisposable(
-            productRepo.getProductDetail(productId)
+            productDataSource.getProductDetail(productId)
                 .subscribeOn(scheduler.io())
                 .observeOn(scheduler.ui())
                 .subscribe({

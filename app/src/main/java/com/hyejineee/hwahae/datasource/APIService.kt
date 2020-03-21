@@ -1,4 +1,4 @@
-package com.hyejineee.hwahae.network
+package com.hyejineee.hwahae.datasource
 
 import com.google.gson.JsonObject
 import retrofit2.Call

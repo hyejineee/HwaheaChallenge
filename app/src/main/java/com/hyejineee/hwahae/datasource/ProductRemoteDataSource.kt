@@ -1,16 +1,15 @@
-package com.hyejineee.hwahae.network
+package com.hyejineee.hwahae.datasource
 
-import com.hyejineee.hwahae.network.ServerMessageCode.BodyMessage
-import android.util.Log
+import com.hyejineee.hwahae.datasource.ServerMessageCode.BodyMessage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hyejineee.hwahae.model.Product
 import com.hyejineee.hwahae.model.ProductDetail
-import com.hyejineee.hwahae.network.ServerMessageCode.StatusCode
+import com.hyejineee.hwahae.datasource.ServerMessageCode.StatusCode
 import io.reactivex.Observable
 import java.lang.reflect.Type
 
-class ProductRepoImpl(val APIService: APIService) : ProductRepo {
+class ProductRemoteDataSource(val APIService: APIService) : ProductDataSource {
 
     override fun getProductList(
         skin_type: String?,

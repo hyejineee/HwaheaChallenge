@@ -1,10 +1,10 @@
-package com.hyejineee.hwahae.network
+package com.hyejineee.hwahae.datasource
 
 import com.hyejineee.hwahae.model.Product
 import com.hyejineee.hwahae.model.ProductDetail
 import io.reactivex.Observable
 
-interface ProductRepo {
+interface ProductDataSource {
     fun getProductList(
         skin_type: String?,
         page_num: Int?,
