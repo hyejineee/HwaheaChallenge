@@ -1,4 +1,4 @@
-package com.hyejineee.hwahae.network.ServerMessageCode
+package com.hyejineee.hwahae.datasource.ServerMessageCode
 
 enum class StatusCode(val code: Int) {
     STATUS_ERROR(404),

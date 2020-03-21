@@ -1,8 +1,8 @@
-package com.hyejineee.hwahae.mView.bindingAdapter
+package com.hyejineee.hwahae.views.bindingAdapter
 
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
-import com.hyejineee.hwahae.mViewModel.ProductViewModel
+import com.hyejineee.hwahae.viewModels.ProductViewModel
 import com.jakewharton.rxbinding3.widget.selectionEvents
 import io.reactivex.android.schedulers.AndroidSchedulers
 

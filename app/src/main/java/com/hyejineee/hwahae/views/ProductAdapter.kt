@@ -1,12 +1,12 @@
-package com.hyejineee.hwahae.mView
+package com.hyejineee.hwahae.views
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hyejineee.hwahae.databinding.GridItemBinding
 import com.hyejineee.hwahae.databinding.LoadingItemBinding
-import com.hyejineee.hwahae.mViewModel.ProductDetailViewModel
-import com.hyejineee.hwahae.mViewModel.ProductViewModel
+import com.hyejineee.hwahae.viewModels.ProductDetailViewModel
+import com.hyejineee.hwahae.viewModels.ProductViewModel
 import com.hyejineee.hwahae.model.Product
 
 class ProductAdapter(

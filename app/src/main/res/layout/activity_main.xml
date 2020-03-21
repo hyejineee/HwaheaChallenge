@@ -6,15 +6,15 @@
 
         <variable
             name="product_view_model"
-            type="com.hyejineee.hwahae.mViewModel.ProductViewModel" />
+            type="com.hyejineee.hwahae.viewModels.ProductViewModel" />
 
         <variable
             name="product_detail_view_model"
-            type="com.hyejineee.hwahae.mViewModel.ProductDetailViewModel" />
+            type="com.hyejineee.hwahae.viewModels.ProductDetailViewModel" />
 
         <variable
             name="activity"
-            type="com.hyejineee.hwahae.mView.MainActivity" />
+            type="com.hyejineee.hwahae.views.MainActivity" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

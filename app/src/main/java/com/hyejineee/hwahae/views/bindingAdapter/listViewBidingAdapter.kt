@@ -1,4 +1,4 @@
-package com.hyejineee.hwahae.mView.bindingAdapter
+package com.hyejineee.hwahae.views.bindingAdapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -8,11 +8,11 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.hyejineee.hwahae.mView.ProductAdapter
-import com.hyejineee.hwahae.mView.ProductDetailDialog
+import com.hyejineee.hwahae.views.ProductAdapter
+import com.hyejineee.hwahae.views.ProductDetailDialog
 import com.hyejineee.hwahae.model.Product
-import com.hyejineee.hwahae.mViewModel.ProductDetailViewModel
-import com.hyejineee.hwahae.mViewModel.ProductViewModel
+import com.hyejineee.hwahae.viewModels.ProductDetailViewModel
+import com.hyejineee.hwahae.viewModels.ProductViewModel
 import com.jakewharton.rxbinding3.swiperefreshlayout.refreshes
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.view.scrollChangeEvents

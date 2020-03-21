@@ -1,8 +1,7 @@
-package com.hyejineee.hwahae.mViewModel
+package com.hyejineee.hwahae.viewModels
 
 import com.hyejineee.hwahae.model.ProductDetail
-import com.hyejineee.hwahae.network.ProductRepo
-import com.hyejineee.hwahae.util.BaseSchedulers
+import com.hyejineee.hwahae.datasource.ProductDataSource
 import io.reactivex.Observable
 import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.Schedulers
@@ -13,7 +12,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 
 internal class ProductDetailViewModelTest {
-    private var productRepo: ProductRepo = Mockito.mock(ProductRepo::class.java)
+    private var productDataSource: ProductDataSource = Mockito.mock(ProductDataSource::class.java)
     private var scheduler: BaseSchedulers = Mockito.mock(BaseSchedulers::class.java)
 
     val productId = 1
@@ -26,7 +25,7 @@ internal class ProductDetailViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        given(productRepo.getProductDetail(productId))
+        given(productDataSource.getProductDetail(productId))
             .willReturn(Observable.just(product))
         given(scheduler.io()).willReturn(Schedulers.single())
         given(scheduler.ui()).willReturn(Schedulers.single())
@@ -34,7 +33,7 @@ internal class ProductDetailViewModelTest {
 
     @Test
     fun getProductDetail() {
-        val viewModel = ProductDetailViewModel(productRepo, scheduler)
+        val viewModel = ProductDetailViewModel(productDataSource, scheduler)
 
         val testObserver: TestObserver<ProductDetail> = TestObserver()
 

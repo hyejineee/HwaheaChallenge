@@ -1,6 +1,5 @@
-package com.hyejineee.hwahae.mView
+package com.hyejineee.hwahae.views
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
@@ -12,35 +11,33 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil.inflate
 import com.hyejineee.hwahae.R
 import com.hyejineee.hwahae.databinding.ProductDetailDialogBinding
-import com.hyejineee.hwahae.mViewModel.ProductDetailViewModel
+import com.hyejineee.hwahae.viewModels.ProductDetailViewModel
 
 class ProductDetailDialog(
     context: Context,
     val product_id: Int,
     val viewModel: ProductDetailViewModel
-) : Dialog(context), BaseInit {
+) : Dialog(context),BaseUI<ProductDetailDialogBinding> {
 
-    private lateinit var viewDataBinding: ProductDetailDialogBinding
+    override lateinit var viewDataBinding: ProductDetailDialogBinding
+    override fun layoutResourceID(): Int = R.layout.product_detail_dialog
 
-    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewDataBinding = DataBindingUtil
-            .inflate(
-                LayoutInflater.from(context),
-                R.layout.product_detail_dialog, null, false
-            )
+        viewDataBinding = inflate(
+                LayoutInflater.from(context), layoutResourceID(), null, false)
 
         setContentView(viewDataBinding.root)
 
         initView()
-        initDataBinding()
         initSubscribe()
+
+        viewDataBinding.dialog = this
+        viewDataBinding.productDetailViewModel = viewModel
     }
 
     fun closeDialog() {
@@ -66,12 +63,6 @@ class ProductDetailDialog(
 
     }
 
-    override fun initDataBinding() {
-        viewDataBinding.dialog = this
-        viewDataBinding.productDetailViewModel = viewModel
-    }
-
-    @SuppressLint("CheckResult")
     override fun initSubscribe() {
         viewModel.getProductDetail(product_id)
         viewModel.addDisposable(viewModel.productDeailSubject.subscribe {

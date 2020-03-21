@@ -1,8 +1,7 @@
-package com.hyejineee.hwahae.mViewModel
+package com.hyejineee.hwahae.viewModels
 
 import com.hyejineee.hwahae.model.Product
-import com.hyejineee.hwahae.network.ProductRepo
-import com.hyejineee.hwahae.util.BaseSchedulers
+import com.hyejineee.hwahae.datasource.ProductDataSource
 import io.reactivex.Observable
 import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.Schedulers
@@ -14,7 +13,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 
 internal class ProductViewModelTest {
-    private var productRepo: ProductRepo = mock(ProductRepo::class.java)
+    private var productDataSource: ProductDataSource = mock(ProductDataSource::class.java)
     private var scheduler: BaseSchedulers = mock(BaseSchedulers::class.java)
 
     val products = listOf(
@@ -31,7 +30,7 @@ internal class ProductViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        given(productRepo.getProductList(any(), any(), any()))
+        given(productDataSource.getProductList(any(), any(), any()))
             .willReturn(Observable.just(products))
         given(scheduler.io()).willReturn(Schedulers.single())
         given(scheduler.ui()).willReturn(Schedulers.single())
@@ -39,7 +38,7 @@ internal class ProductViewModelTest {
 
     @Test
     fun increasePageNumber() {
-        val viewModel = ProductViewModel(productRepo, scheduler)
+        val viewModel = ProductViewModel(productDataSource, scheduler)
         viewModel.products = products
 
         val originPageNum = viewModel.pageNum
@@ -59,7 +58,7 @@ internal class ProductViewModelTest {
 
     @Test
     fun selectSkinType() {
-        val viewModel = ProductViewModel(productRepo, scheduler)
+        val viewModel = ProductViewModel(productDataSource, scheduler)
         viewModel.pageNum = 5
 
         val testObserver: TestObserver<List<Product>> = TestObserver()
@@ -76,7 +75,7 @@ internal class ProductViewModelTest {
 
     @Test
     fun search() {
-        val viewModel = ProductViewModel(productRepo, scheduler)
+        val viewModel = ProductViewModel(productDataSource, scheduler)
         viewModel.pageNum = 5
 
         val testObserver: TestObserver<List<Product>> = TestObserver()

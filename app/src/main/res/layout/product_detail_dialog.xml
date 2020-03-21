@@ -11,11 +11,11 @@
 
         <variable
             name="product_detail_view_model"
-            type="com.hyejineee.hwahae.mViewModel.ProductDetailViewModel" />
+            type="com.hyejineee.hwahae.viewModels.ProductDetailViewModel" />
 
         <variable
             name="dialog"
-            type="com.hyejineee.hwahae.mView.ProductDetailDialog" />
+            type="com.hyejineee.hwahae.views.ProductDetailDialog" />
     </data>
 
 

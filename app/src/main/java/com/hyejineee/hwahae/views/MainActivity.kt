@@ -1,24 +1,38 @@
-package com.hyejineee.hwahae.mView
+package com.hyejineee.hwahae.views
 
+import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.isVisible
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyejineee.hwahae.R
 import com.hyejineee.hwahae.databinding.ActivityMainBinding
-import com.hyejineee.hwahae.mViewModel.ProductDetailViewModel
-import com.hyejineee.hwahae.mViewModel.ProductViewModel
+import com.hyejineee.hwahae.viewModels.ProductDetailViewModel
+import com.hyejineee.hwahae.viewModels.ProductViewModel
 import com.hyejineee.hwahae.util.SpacesItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity<ActivityMainBinding>() {
+class MainActivity : AppCompatActivity(), BaseUI<ActivityMainBinding> {
 
     override lateinit var viewDataBinding: ActivityMainBinding
     private val productViewModel: ProductViewModel by viewModel()
     private val productDetailViewModel: ProductDetailViewModel by viewModel()
 
     override fun layoutResourceID(): Int = R.layout.activity_main
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewDataBinding = setContentView(this, layoutResourceID())
+
+        initView()
+        initSubscribe()
+
+        viewDataBinding.productViewModel = this.productViewModel
+        viewDataBinding.productDetailViewModel = this.productDetailViewModel
+        viewDataBinding.activity = this
+    }
 
     override fun initView() {
         val layoutManager = GridLayoutManager(this, 2)
@@ -36,12 +50,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         viewDataBinding.itemGridView.addItemDecoration(SpacesItemDecoration(7))
     }
 
-    override fun initDataBinding() {
-        viewDataBinding.productViewModel = this.productViewModel
-        viewDataBinding.productDetailViewModel = this.productDetailViewModel
-        viewDataBinding.activity = this
-    }
-
     override fun initSubscribe() {
         productViewModel.addDisposable(
             productViewModel.onErrorSubject
@@ -54,7 +62,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         )
     }
 
-    fun clearSerchText() = viewDataBinding.searchEditTv.setText("")
+    fun clearSearchText() = viewDataBinding.searchEditTv.setText("")
 
     fun reRequest() {
         productViewModel.getProducts()

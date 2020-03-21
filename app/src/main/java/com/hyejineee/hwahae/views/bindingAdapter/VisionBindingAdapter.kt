@@ -1,4 +1,4 @@
-package com.hyejineee.hwahae.mView.bindingAdapter
+package com.hyejineee.hwahae.views.bindingAdapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import com.hyejineee.hwahae.R
 import io.reactivex.subjects.Subject
