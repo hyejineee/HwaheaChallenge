@@ -1,121 +1,150 @@
 package com.hyejineee.hwahae.viewModels
 
-import android.annotation.SuppressLint
-import com.hyejineee.hwahae.model.Product
+import com.hyejineee.hwahae.Action
+import com.hyejineee.hwahae.ActionType
 import com.hyejineee.hwahae.datasource.ProductDataSource
-import io.reactivex.Observable
-import io.reactivex.Observable.merge
+import com.hyejineee.hwahae.model.Product
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 
 class ProductViewModel(
-    private val productDataSource: ProductDataSource): BaseViewModel() {
+    private val productDataSource: ProductDataSource
+) : BaseViewModel() {
 
     var skinType: String? = null
     var keyword: String? = null
     var pageNum = 1
+
     var products = listOf<Product>()
         set(value) {
-            field = value
-            productsSubject.onNext(value)
-        }
+            onLoadingModeChange.onNext(false)
+            onPagingModeChange.onNext(false)
 
-    val productsSubject: Subject<List<Product>> = PublishSubject.create()
-    private val skinTypeChangeSubject: Subject<String> = PublishSubject.create()
-    private val pageNumberIncreaseSubject: Subject<Unit> = PublishSubject.create()
-    private val searchChangeSubject: Subject<String> = PublishSubject.create()
+            field = value
+            onProductChange.onNext(value)
+        }
+    val onProductChange: Subject<List<Product>> = PublishSubject.create()
+
+    private val actionSubject: Subject<Action> = PublishSubject.create()
 
     val onErrorSubject: Subject<Throwable> = PublishSubject.create()
-    val isLoadingSubject: Subject<Boolean> = PublishSubject.create()
+
+    val onLoadingModeChange: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
+    val onPagingModeChange : BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
+
     val noItemSubject: Subject<Boolean> = PublishSubject.create()
     var isMoreLoad: Boolean = false
 
     init {
-        setEvents()
+        setSubscribeActionSubject()
     }
 
-    private fun cancleLoadMode() {
-        isMoreLoad = false
-        isLoadingSubject.onNext(false)
+    private fun setSubscribeActionSubject(){
+        actionSubject.subscribe {
+            when (it.type) {
+                ActionType.FILTERING ->
+                    skinType = if (it.data as String != "all") it.data else null
+                ActionType.NEXT_PAGE -> pageNum += 1
+                ActionType.SEARCH ->
+                    keyword = if ((it.data as String).trim().isNotEmpty()) it.data else null
+            }
+            getProductList()
+        }.addTo(compositeDisposable)
     }
 
-    @SuppressLint("CheckResult")
-    fun increasePageNumber() {
-        isMoreLoad = true
-        pageNumberIncreaseSubject.onNext(Unit)
+    fun actionDispatch(action: ActionType, data: Any) {
+        when(action){
+            ActionType.NEXT_PAGE -> onPagingModeChange.onNext(true)
+            else -> onLoadingModeChange.onNext(true)
+        }
+        actionSubject.onNext(Action(action, data))
     }
 
-    fun selectSkinType(skinType: String) = skinTypeChangeSubject.onNext(skinType)
-
-    fun search(keyword: String) = searchChangeSubject.onNext(keyword)
-
-    fun refresh(): Observable<List<Product>> {
-        this.pageNum = 1
-        return getProductList()
-    }
-
-    private fun getProductList(): Observable<List<Product>> {
-        val skinType = if (this.skinType === "all") null else this.skinType
-        val keyword = if (this.keyword == "") null else this.keyword
-
-        return productDataSource.getProductList(skinType, pageNum, keyword)
+    private fun getProductList() {
+        productDataSource.getProductList(skinType, pageNum, keyword)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { throwable -> onErrorSubject.onNext(throwable) }
-    }
-
-    @SuppressLint("CheckResult")
-    fun getProducts() {
-        isLoadingSubject.onNext(true)
-        getProductList()
-            .subscribe({
-                noItemSubject.onNext(it.isEmpty())
+            .subscribe {
                 products = it
-                cancleLoadMode()
-            }, {
-                onErrorSubject.onNext(it)
-                cancleLoadMode()
-            })
+            }.addTo(compositeDisposable)
     }
 
-    @SuppressLint("CheckResult")
-    fun setEvents() {
+    //    private fun cancleLoadMode() {
+//        isMoreLoad = false
+//        isLoadingSubject.onNext(false)
+//    }
 
-            merge(
-                skinTypeChangeSubject
-                    .map { skinType = it },
-                searchChangeSubject
-                    .map { keyword = it }
-            )
-                .map { pageNum = 1 }
-                .map { isLoadingSubject.onNext(true) }
-                .flatMap { getProductList() }
-                .subscribe({
-                    noItemSubject.onNext(it.isEmpty())
-                    products = it
-                    cancleLoadMode()
-                }, {
-                    onErrorSubject.onNext(it)
-                    cancleLoadMode()
-                })
+//    @SuppressLint("CheckResult")
+//    fun increasePageNumber() {
+//        isMoreLoad = true
+//        pageNumberIncreaseSubject.onNext(Unit)
+//    }
+//
+//    fun selectSkinType(skinType: String) = skinTypeChangeSubject.onNext(skinType)
+//
+//    fun search(keyword: String) = searchChangeSubject.onNext(keyword)
 
+//    fun refresh(): Observable<List<Product>> {
+//        this.pageNum = 1
+//        return getProductList()
+//    }
 
 
-            pageNumberIncreaseSubject
-                .filter { products.isNotEmpty() }
-                .map { pageNum += 1 }
-                .flatMap { getProductList() }
-                .subscribe({
-                    products = products.plus(it)
-                    cancleLoadMode()
-                }, {
-                    pageNum -= 1
-                    onErrorSubject.onNext(it)
-                    cancleLoadMode()
-                })
 
-    }
+//    @SuppressLint("CheckResult")
+//    fun getProducts() {
+//        isLoadingSubject.onNext(true)
+//        getProductList()
+//            .subscribe({
+//                noItemSubject.onNext(it.isEmpty())
+//                products = it
+//                cancleLoadMode()
+//            }, {
+//                onErrorSubject.onNext(it)
+//                cancleLoadMode()
+//            })
+//    }
 
+//    @SuppressLint("CheckResult")
+//    fun setEvents() {
+//
+//            merge(
+//                skinTypeChangeSubject
+//                    .map { skinType = it },
+//                searchChangeSubject
+//                    .map { keyword = it }
+//            )
+//                .map { pageNum = 1 }
+//                .map { isLoadingSubject.onNext(true) }
+//                .flatMap { getProductList() }
+//                .subscribe({
+//                    noItemSubject.onNext(it.isEmpty())
+//                    products = it
+//                    cancleLoadMode()
+//                }, {
+//                    onErrorSubject.onNext(it)
+//                    cancleLoadMode()
+//                })
+//
+//
+//
+//            pageNumberIncreaseSubject
+//                .filter { products.isNotEmpty() }
+//                .map { pageNum += 1 }
+//                .flatMap { getProductList() }
+//                .subscribe({
+//                    products = products.plus(it)
+//                    cancleLoadMode()
+//                }, {
+//                    pageNum -= 1
+//                    onErrorSubject.onNext(it)
+//                    cancleLoadMode()
+//                })
+//
+//    }
+//
 }

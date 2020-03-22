@@ -18,8 +18,7 @@ import com.hyejineee.hwahae.viewModels.ProductDetailViewModel
 
 class ProductDetailDialog(
     context: Context,
-    val product_id: Int,
-    val viewModel: ProductDetailViewModel
+    val product_id: Int
 ) : Dialog(context) {
 
     private lateinit var viewDataBinding: ProductDetailDialogBinding
@@ -35,7 +34,7 @@ class ProductDetailDialog(
         initSubscribe()
 
         viewDataBinding.dialog = this
-        viewDataBinding.productDetailViewModel = viewModel
+//        viewDataBinding.productDetailViewModel = viewModel
     }
 
     fun closeDialog() {
@@ -62,21 +61,21 @@ class ProductDetailDialog(
     }
 
     private fun initSubscribe() {
-        viewModel.getProductDetail(product_id)
-        viewModel.productDetailSubject.subscribe {
-            viewDataBinding.productDetailLayout.visibility = View.VISIBLE
-            viewDataBinding.product = it
-        }
-        viewModel.onErrorSubject.subscribe {
-            viewDataBinding.refreshBtn.visibility = View.VISIBLE
-            viewDataBinding.productDetailLayout.visibility = View.GONE
-            viewDataBinding.buyButton.visibility = View.GONE
-            Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
-        }
+//        viewModel.getProductDetail(product_id)
+//        viewModel.productDetailSubject.subscribe {
+//            viewDataBinding.productDetailLayout.visibility = View.VISIBLE
+//            viewDataBinding.product = it
+//        }
+//        viewModel.onErrorSubject.subscribe {
+//            viewDataBinding.refreshBtn.visibility = View.VISIBLE
+//            viewDataBinding.productDetailLayout.visibility = View.GONE
+//            viewDataBinding.buyButton.visibility = View.GONE
+//            Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+//        }
     }
 
     fun reRequest() {
-        viewModel.getProductDetail(product_id)
+//        viewModel.getProductDetail(product_id)
         viewDataBinding.refreshBtn.visibility = View.GONE
     }
 }

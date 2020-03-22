@@ -54,7 +54,7 @@ dependencies {
     def espresso_version = "3.2.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
-
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
 
     implementation "org.koin:koin-androidx-viewmodel:2.0.1"
     implementation "org.koin:koin-test:2.0.1"
