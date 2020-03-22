@@ -5,9 +5,9 @@
         <variable
             name="item"
             type="com.hyejineee.hwahae.model.Product" />
-        <variable
-            name="view_model"
-            type="com.hyejineee.hwahae.viewModels.ProductDetailViewModel" />
+<!--        <variable-->
+<!--            name="view_model"-->
+<!--            type="com.hyejineee.hwahae.viewModels.ProductDetailViewModel" />-->
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,9 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:layout_marginBottom="24dp"
-        app:viewModel="@{view_model}"
-        app:itemClick="@{item.id}">
+        android:layout_marginBottom="24dp">
 
         <ImageView
             android:id="@+id/item_img"

@@ -10,20 +10,27 @@ import com.hyejineee.hwahae.viewModels.ProductViewModel
 import com.hyejineee.hwahae.model.Product
 
 class ProductAdapter(
-    private var products: List<Product> = emptyList()
+    private val clickListener : (Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    var products = listOf<Product>()
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
 
     val LOADING_ITEM = 0
     val PRODUCT_ITEM = 1
 
-    lateinit var productDetailViewModel: ProductDetailViewModel
-    lateinit var productViewModel: ProductViewModel
+//    lateinit var productDetailViewModel: ProductDetailViewModel
+//    lateinit var productViewModel: ProductViewModel
 
     inner class ViewHolder(val gridItemBinding: GridItemBinding) :
         RecyclerView.ViewHolder(gridItemBinding.root) {
         fun bind(item: Product) {
             gridItemBinding.item = item
-            gridItemBinding.viewModel = productDetailViewModel
+            gridItemBinding.root.setOnClickListener { clickListener }
+//            gridItemBinding.viewModel = productDetailViewModel
             gridItemBinding.executePendingBindings()
         }
     }
@@ -36,10 +43,6 @@ class ProductAdapter(
         }
     }
 
-    fun setProducts(products: List<Product>) {
-        this.products = products
-        notifyDataSetChanged()
-    }
 
     fun initLoadingMode() {
         products = products.plus(Product())
