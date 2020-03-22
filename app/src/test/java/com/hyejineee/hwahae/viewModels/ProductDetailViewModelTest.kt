@@ -37,7 +37,7 @@ internal class ProductDetailViewModelTest {
 
         val testObserver: TestObserver<ProductDetail> = TestObserver()
 
-        viewModel.productDeailSubject.subscribe(testObserver)
+        viewModel.productDetailSubject.subscribe(testObserver)
 
         viewModel.getProductDetail(productId)
 

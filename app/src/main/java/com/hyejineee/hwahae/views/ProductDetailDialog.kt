@@ -22,7 +22,7 @@ class ProductDetailDialog(
     val viewModel: ProductDetailViewModel
 ) : Dialog(context),BaseUI<ProductDetailDialogBinding> {
 
-    override lateinit var viewDataBinding: ProductDetailDialogBinding
+    lateinit var viewDataBinding: ProductDetailDialogBinding
     override fun layoutResourceID(): Int = R.layout.product_detail_dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,16 +65,16 @@ class ProductDetailDialog(
 
     override fun initSubscribe() {
         viewModel.getProductDetail(product_id)
-        viewModel.addDisposable(viewModel.productDeailSubject.subscribe {
+        viewModel.productDetailSubject.subscribe {
             viewDataBinding.productDetailLayout.visibility = View.VISIBLE
             viewDataBinding.product = it
-        })
-        viewModel.addDisposable(viewModel.onErrorSubject.subscribe {
+        }
+        viewModel.onErrorSubject.subscribe {
             viewDataBinding.refreshBtn.visibility = View.VISIBLE
             viewDataBinding.productDetailLayout.visibility = View.GONE
             viewDataBinding.buyButton.visibility = View.GONE
             Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
-        })
+        }
 
     }
 

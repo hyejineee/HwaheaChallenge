@@ -12,11 +12,13 @@ import com.hyejineee.hwahae.viewModels.ProductDetailViewModel
 import com.hyejineee.hwahae.viewModels.ProductViewModel
 import com.hyejineee.hwahae.util.SpacesItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.addTo
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), BaseUI<ActivityMainBinding> {
 
-    override lateinit var viewDataBinding: ActivityMainBinding
+    lateinit var viewDataBinding: ActivityMainBinding
+
     private val productViewModel: ProductViewModel by viewModel()
     private val productDetailViewModel: ProductDetailViewModel by viewModel()
 
@@ -51,7 +53,7 @@ class MainActivity : AppCompatActivity(), BaseUI<ActivityMainBinding> {
     }
 
     override fun initSubscribe() {
-        productViewModel.addDisposable(
+
             productViewModel.onErrorSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity(), BaseUI<ActivityMainBinding> {
                     viewDataBinding.itemGridView.visibility = View.GONE
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 }
-        )
+
     }
 
     fun clearSearchText() = viewDataBinding.searchEditTv.setText("")

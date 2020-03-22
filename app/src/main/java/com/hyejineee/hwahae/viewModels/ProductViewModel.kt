@@ -5,6 +5,8 @@ import com.hyejineee.hwahae.model.Product
 import com.hyejineee.hwahae.datasource.ProductDataSource
 import io.reactivex.Observable
 import io.reactivex.Observable.merge
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 
@@ -46,10 +48,8 @@ class ProductViewModel(
         pageNumberIncreaseSubject.onNext(Unit)
     }
 
-    @SuppressLint("CheckResult")
     fun selectSkinType(skinType: String) = skinTypeChangeSubject.onNext(skinType)
 
-    @SuppressLint("CheckResult")
     fun search(keyword: String) = searchChangeSubject.onNext(keyword)
 
     fun refresh(): Observable<List<Product>> {
@@ -62,8 +62,8 @@ class ProductViewModel(
         val keyword = if (this.keyword == "") null else this.keyword
 
         return productDataSource.getProductList(skinType, pageNum, keyword)
-            .subscribeOn(scheduler.io())
-            .observeOn(scheduler.ui())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnError { throwable -> onErrorSubject.onNext(throwable) }
     }
 
@@ -83,7 +83,7 @@ class ProductViewModel(
 
     @SuppressLint("CheckResult")
     fun setEvents() {
-        addDisposable(
+
             merge(
                 skinTypeChangeSubject
                     .map { skinType = it },
@@ -101,9 +101,9 @@ class ProductViewModel(
                     onErrorSubject.onNext(it)
                     cancleLoadMode()
                 })
-        )
 
-        addDisposable(
+
+
             pageNumberIncreaseSubject
                 .filter { products.isNotEmpty() }
                 .map { pageNum += 1 }
@@ -116,7 +116,7 @@ class ProductViewModel(
                     onErrorSubject.onNext(it)
                     cancleLoadMode()
                 })
-        )
+
     }
 
 }
