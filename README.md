@@ -2,7 +2,6 @@
 
 - 프로그래머스에서 진행한 화해 앱 개발 챌린지
 - 2020/01/06 ~ 2020/01/28
-- [https://github.com/hyejineee/Hwahae-Android-challenge](https://github.com/hyejineee/Hwahae-Android-challenge)
 
 ## 🙌🏻 무엇을 만들었는가?
 
