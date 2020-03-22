@@ -80,7 +80,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
                     android:background="@color/opacity0"
-                    android:onClick="@{_ -> activity.clearSerchText()}"
+                    android:onClick="@{_ -> activity.clearSearchText()}"
                     android:padding="8dp"
                     android:src="@drawable/ic_clear" />
 

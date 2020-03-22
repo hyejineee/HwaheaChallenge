@@ -1,6 +1,7 @@
 package com.hyejineee.hwahae.viewModels
 
 import android.annotation.SuppressLint
+import androidx.lifecycle.ViewModel
 import com.hyejineee.hwahae.model.ProductDetail
 import com.hyejineee.hwahae.datasource.ProductDataSource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -8,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 
-class ProductDetailViewModel(private val productDataSource: ProductDataSource) {
+class ProductDetailViewModel(private val productDataSource: ProductDataSource): ViewModel() {
 
     val productDetailSubject: Subject<ProductDetail> = PublishSubject.create()
     val onErrorSubject: Subject<Throwable> = PublishSubject.create()
