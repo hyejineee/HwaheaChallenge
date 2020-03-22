@@ -38,7 +38,7 @@
     - 
 4. 리팩토링 
 
-    ![Hwahea%20challenge/_2020-03-21__11.55.49.png](images/_2020-03-21__11.55.49.png)
+    ![Hwahea%20challenge/_2020-03-21__11.55.49.png](images/IMG_615D24D18FCB-1.jpeg)
 
     경우에 따라 body에 jsonArray,string, jsonObject이 들어간다... 
 
