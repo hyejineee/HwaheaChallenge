@@ -1,6 +1,7 @@
 package com.hyejineee.hwahae.viewModels
 
 import android.annotation.SuppressLint
+import androidx.lifecycle.ViewModel
 import com.hyejineee.hwahae.model.Product
 import com.hyejineee.hwahae.datasource.ProductDataSource
 import io.reactivex.Observable
@@ -11,8 +12,7 @@ import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 
 class ProductViewModel(
-    private val productDataSource: ProductDataSource
-)  {
+    private val productDataSource: ProductDataSource): ViewModel()  {
 
     var skinType: String? = null
     var keyword: String? = null
