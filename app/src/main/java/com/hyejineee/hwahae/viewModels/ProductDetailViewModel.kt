@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 
-class ProductDetailViewModel(private val productDataSource: ProductDataSource): ViewModel() {
+class ProductDetailViewModel(private val productDataSource: ProductDataSource): BaseViewModel() {
 
     val productDetailSubject: Subject<ProductDetail> = PublishSubject.create()
     val onErrorSubject: Subject<Throwable> = PublishSubject.create()
