@@ -22,7 +22,8 @@
     화장품에 대한 정보를 보여주기만 하는 간단한 애플리케이션이기 때문에 사용자 플로우도 매우 간단하다. 
 
     먼저 애플리케이션을 실행하면 모든 타입의 화장품 리스트와 검색창, 필터 스피너가 보인다. 검색과 필터 적용시 조건에 해당하는 화장품의 리스트가 보여지게 되고 화장품 리스트의 아이템을 클릭하면 화장품 상세 다이얼로그가 뜬다.  
-    ![스케이터스 드가...](images/statuscode.png)
+    ![Hwahea%20challenge/_2020-03-21__11.55.49.png](images/IMG_615D24D18FCB-1.jpeg)
+    
 
 2. 애플리케이션 구조 (→ 의존성 방향)
 
@@ -36,10 +37,9 @@
     - 
 4. 리팩토링 
 
-    ![Hwahea%20challenge/_2020-03-21__11.55.49.png](images/IMG_615D24D18FCB-1.jpeg)
+    ![스케이터스 코드가...](images/statuscode.png)
 
-    경우에 따라 body에 jsonArray,string, jsonObject이 들어간다... 
-
+    경우에 따라 body에 jsonArray,string, jsonObject이 들어가기 때문에 gson coverter를 product클래스로 할 경우 에러가 발생한다.
     그래서 okhttp에 network interceptor를 추가했다. 
 
     - 원래 코드
