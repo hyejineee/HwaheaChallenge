@@ -20,17 +20,15 @@ class ProductDetailDialog(
     context: Context,
     val product_id: Int,
     val viewModel: ProductDetailViewModel
-) : Dialog(context),BaseUI<ProductDetailDialogBinding> {
+) : Dialog(context) {
 
-    lateinit var viewDataBinding: ProductDetailDialogBinding
-    override fun layoutResourceID(): Int = R.layout.product_detail_dialog
+    private lateinit var viewDataBinding: ProductDetailDialogBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewDataBinding = inflate(
-                LayoutInflater.from(context), layoutResourceID(), null, false)
-
+                LayoutInflater.from(context), R.layout.product_detail_dialog, null, false)
         setContentView(viewDataBinding.root)
 
         initView()
@@ -44,7 +42,7 @@ class ProductDetailDialog(
         this.dismiss()
     }
 
-    override fun initView() {
+    private fun initView() {
         window.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
         val displayMetrics = DisplayMetrics()
         window.windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -63,7 +61,7 @@ class ProductDetailDialog(
 
     }
 
-    override fun initSubscribe() {
+    private fun initSubscribe() {
         viewModel.getProductDetail(product_id)
         viewModel.productDetailSubject.subscribe {
             viewDataBinding.productDetailLayout.visibility = View.VISIBLE
@@ -75,7 +73,6 @@ class ProductDetailDialog(
             viewDataBinding.buyButton.visibility = View.GONE
             Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
         }
-
     }
 
     fun reRequest() {

@@ -3,21 +3,17 @@ package com.hyejineee.hwahae.views
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyejineee.hwahae.R
 import com.hyejineee.hwahae.databinding.ActivityMainBinding
+import com.hyejineee.hwahae.util.SpacesItemDecoration
 import com.hyejineee.hwahae.viewModels.ProductDetailViewModel
 import com.hyejineee.hwahae.viewModels.ProductViewModel
-import com.hyejineee.hwahae.util.SpacesItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity(), BaseUI<ActivityMainBinding> {
-
-    lateinit var viewDataBinding: ActivityMainBinding
+class MainActivity :BaseActivity<ActivityMainBinding>() {
 
     private val productViewModel: ProductViewModel by viewModel()
     private val productDetailViewModel: ProductDetailViewModel by viewModel()
@@ -26,10 +22,6 @@ class MainActivity : AppCompatActivity(), BaseUI<ActivityMainBinding> {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewDataBinding = setContentView(this, layoutResourceID())
-
-        initView()
-        initSubscribe()
 
         viewDataBinding.productViewModel = this.productViewModel
         viewDataBinding.productDetailViewModel = this.productDetailViewModel
@@ -60,7 +52,7 @@ class MainActivity : AppCompatActivity(), BaseUI<ActivityMainBinding> {
                     viewDataBinding.refreshBtn.visibility = View.VISIBLE
                     viewDataBinding.itemGridView.visibility = View.GONE
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                }
+                }.addTo(compositeDisposable)
 
     }
 
@@ -71,4 +63,6 @@ class MainActivity : AppCompatActivity(), BaseUI<ActivityMainBinding> {
         viewDataBinding.refreshBtn.visibility = View.GONE
         viewDataBinding.itemGridView.visibility =  View.VISIBLE
     }
+
+
 }

@@ -18,6 +18,7 @@ fun getNetworkModule(baseUrl: String) = module {
         OkHttpClient.Builder()
             .writeTimeout(5000, TimeUnit.MILLISECONDS)
             .readTimeout(5000, TimeUnit.MILLISECONDS)
+            .addNetworkInterceptor(ResponseInterceptor())
             .build()
     }
 
