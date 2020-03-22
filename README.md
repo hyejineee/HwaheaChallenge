@@ -24,12 +24,11 @@
     화장품에 대한 정보를 보여주기만 하는 간단한 애플리케이션이기 때문에 사용자 플로우도 매우 간단하다. 
 
     먼저 애플리케이션을 실행하면 모든 타입의 화장품 리스트와 검색창, 필터 스피너가 보인다. 검색과 필터 적용시 조건에 해당하는 화장품의 리스트가 보여지게 되고 화장품 리스트의 아이템을 클릭하면 화장품 상세 다이얼로그가 뜬다.
-
-    ![제출시 프로젝트 폴더 구조](./images/스크린샷 2020-03-21 오후 11.01.55.png)
+    ![제출시 프로젝트 폴더 구조] (images/스크린샷 2020-03-21 오후 11.01.55.png)
 
 2. 애플리케이션 구조 (→ 의존성 방향)
 
-    ![Hwahea%20challenge/IMG_64E765B8AF2C-1.jpeg](Hwahea%20challenge/IMG_64E765B8AF2C-1.jpeg)
+    ![Hwahea%20challenge/IMG_64E765B8AF2C-1.jpeg](images/IMG_64E765B8AF2C-1.jpeg)
 
     viewModel을 대대적으로 고쳐야 할 것 같다...
 
@@ -39,7 +38,7 @@
     - 
 4. 리팩토링 
 
-    ![Hwahea%20challenge/_2020-03-21__11.55.49.png](Hwahea%20challenge/_2020-03-21__11.55.49.png)
+    ![Hwahea%20challenge/_2020-03-21__11.55.49.png](images/_2020-03-21__11.55.49.png)
 
     경우에 따라 body에 jsonArray,string, jsonObject이 들어간다... 
 
