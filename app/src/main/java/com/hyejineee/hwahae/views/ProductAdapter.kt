@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hyejineee.hwahae.databinding.GridItemBinding
 import com.hyejineee.hwahae.databinding.LoadingItemBinding
-import com.hyejineee.hwahae.viewModels.ProductDetailViewModel
-import com.hyejineee.hwahae.viewModels.ProductViewModel
 import com.hyejineee.hwahae.model.Product
 
 class ProductAdapter(
@@ -22,15 +20,11 @@ class ProductAdapter(
     val LOADING_ITEM = 0
     val PRODUCT_ITEM = 1
 
-//    lateinit var productDetailViewModel: ProductDetailViewModel
-//    lateinit var productViewModel: ProductViewModel
-
     inner class ViewHolder(val gridItemBinding: GridItemBinding) :
         RecyclerView.ViewHolder(gridItemBinding.root) {
         fun bind(item: Product) {
             gridItemBinding.item = item
             gridItemBinding.root.setOnClickListener { clickListener }
-//            gridItemBinding.viewModel = productDetailViewModel
             gridItemBinding.executePendingBindings()
         }
     }
@@ -43,15 +37,12 @@ class ProductAdapter(
         }
     }
 
-
-    fun initLoadingMode() {
+    fun startLoadingMode() {
         products = products.plus(Product())
-        this.notifyDataSetChanged()
     }
 
     fun stopLoadingMode() {
         products = products.dropLast(1)
-        this.notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int =

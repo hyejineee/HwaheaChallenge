@@ -4,17 +4,6 @@
 
     <data>
 
-<!--        <variable-->
-<!--            name="product_view_model"-->
-<!--            type="com.hyejineee.hwahae.viewModels.ProductViewModel" />-->
-
-<!--        <variable-->
-<!--            name="product_detail_view_model"-->
-<!--            type="com.hyejineee.hwahae.viewModels.ProductDetailViewModel" />-->
-
-<!--        <variable-->
-<!--            name="activity"-->
-<!--            type="com.hyejineee.hwahae.views.MainActivity" />-->
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -41,7 +30,6 @@
                     android:layout_gravity="end|center_vertical"
                     android:entries="@array/skin_type"
                     app:layout_collapseMode="parallax">
-<!--                    app:spinnerListener="@{product_view_model}">-->
 
                 </Spinner>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -72,8 +60,8 @@
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:padding="6dp"
-                    android:singleLine="true"/>
-<!--                    app:searchListener="@{product_view_model}" />-->
+                    android:singleLine="true" />
+                <!--                    app:searchListener="@{product_view_model}" />-->
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -87,27 +75,13 @@
             </FrameLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swiperefresh"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/item_grid_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-<!--            app:refresh="@{product_view_model}">-->
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/item_grid_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-<!--                app:adapter="@{product_detail_view_model}"-->
-<!--                app:items="@{product_view_model.productsSubject}"-->
-<!--                app:loadingVisible="@{product_view_model.isLoadingSubject}"-->
-<!--                app:productViewModel="@{product_view_model}"-->
-<!--                app:scrollListener="@{product_view_model}" />-->
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <FrameLayout
             android:id="@+id/no_item_notice_view"
@@ -120,8 +94,6 @@
             android:focusableInTouchMode="true"
             android:touchscreenBlocksFocus="true"
             android:visibility="gone">
-<!--            app:noItemNoticeVisible="@{product_view_model.noItemSubject}"-->
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -152,19 +124,18 @@
         </LinearLayout>
 
         <FrameLayout
-            android:visibility="gone"
+            android:id="@+id/loading_notice_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#95000000"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:touchscreenBlocksFocus="true">
-<!--            app:loadingVisible="@{product_view_model.isLoadingSubject}">-->
+            android:touchscreenBlocksFocus="true"
+            android:visibility="gone">
 
             <include layout="@layout/loading_layout" />
         </FrameLayout>
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
