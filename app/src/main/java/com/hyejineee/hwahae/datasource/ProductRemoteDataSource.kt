@@ -19,6 +19,7 @@ class ProductRemoteDataSource(val APIService: APIService) : ProductDataSource {
     ): Observable<List<Product>> {
         return Observable.create { observer ->
             try {
+                Log.d("request", "skinType : $skin_type pageNum : $page_num keyword:$key_word" )
                 val r = APIService
                     .getProductList(skin_type, page_num, key_word)
                     .execute()

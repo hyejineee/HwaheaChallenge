@@ -1,6 +1,7 @@
 package com.hyejineee.hwahae.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -37,9 +38,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        viewDataBinding.productViewModel = this.productViewModel
-//        viewDataBinding.productDetailViewModel = this.productDetailViewModel
-//        viewDataBinding.activity = this
+        productViewModel.actionDispatch(ActionType.REFRESH, 0)
     }
 
     override fun initView() {
@@ -66,6 +65,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                         == productAdapter.itemCount.minus(1)
                         && !productViewModel.onPagingModeChange.blockingFirst()
                     ) {
+                        productAdapter.startLoadingMode()
                         this.smoothScrollToPosition(productAdapter.itemCount - 1)
                         productViewModel.actionDispatch(ActionType.NEXT_PAGE,0)
                     }
@@ -91,15 +91,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun initSubscribe() {
         productViewModel.onProductChange
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                productAdapter.products = it
-            }.addTo(compositeDisposable)
+            .subscribe { productAdapter.products = it }
+            .addTo(compositeDisposable)
 
         productViewModel.onPagingModeChange
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 if(!it) productAdapter.stopLoadingMode()
             }.addTo(compositeDisposable)
+
+        productViewModel.onLoadingModeChange
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                viewDataBinding.loadingNoticeView.visibility = if(it) View.VISIBLE else View.GONE
+                viewDataBinding.itemGridView.visibility = if(it) View.GONE else View.VISIBLE
+            }
+            .addTo(compositeDisposable)
 
         productViewModel.onErrorSubject
             .observeOn(AndroidSchedulers.mainThread())
@@ -108,7 +115,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 viewDataBinding.itemGridView.visibility = View.GONE
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }.addTo(compositeDisposable)
-
     }
 
     fun clearSearchText(view: View) = viewDataBinding.searchEditTv.setText("")

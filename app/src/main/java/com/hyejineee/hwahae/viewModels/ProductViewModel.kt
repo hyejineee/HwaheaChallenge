@@ -1,5 +1,6 @@
 package com.hyejineee.hwahae.viewModels
 
+import android.util.Log
 import com.hyejineee.hwahae.Action
 import com.hyejineee.hwahae.ActionType
 import com.hyejineee.hwahae.datasource.ProductDataSource
@@ -15,26 +16,25 @@ class ProductViewModel(
     private val productDataSource: ProductDataSource
 ) : BaseViewModel() {
 
+    private val actionSubject: Subject<Action> = PublishSubject.create()
+
     var skinType: String? = null
     var keyword: String? = null
     var pageNum = 1
 
-    var products = listOf<Product>()
+    var products = mutableListOf<Product>()
         set(value) {
             onLoadingModeChange.onNext(false)
             onPagingModeChange.onNext(false)
 
             field = value
-            onProductChange.onNext(value)
+            onProductChange.onNext(field)
         }
     val onProductChange: Subject<List<Product>> = PublishSubject.create()
 
-    private val actionSubject: Subject<Action> = PublishSubject.create()
-
     val onErrorSubject: Subject<Throwable> = PublishSubject.create()
-
     val onLoadingModeChange: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
-    val onPagingModeChange : BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
+    val onPagingModeChange: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
 
     val noItemSubject: Subject<Boolean> = PublishSubject.create()
     var isMoreLoad: Boolean = false
@@ -43,35 +43,64 @@ class ProductViewModel(
         setSubscribeActionSubject()
     }
 
-    private fun setSubscribeActionSubject(){
-        actionSubject.subscribe {
-            when (it.type) {
-                ActionType.FILTERING ->
-                    skinType = if (it.data as String != "all") it.data else null
-                ActionType.NEXT_PAGE -> pageNum += 1
-                ActionType.SEARCH ->
-                    keyword = if ((it.data as String).trim().isNotEmpty()) it.data else null
-            }
-            getProductList()
-        }.addTo(compositeDisposable)
-    }
-
     fun actionDispatch(action: ActionType, data: Any) {
-        when(action){
+        when (action) {
             ActionType.NEXT_PAGE -> onPagingModeChange.onNext(true)
             else -> onLoadingModeChange.onNext(true)
         }
         actionSubject.onNext(Action(action, data))
     }
 
-    private fun getProductList() {
+    private fun setSubscribeActionSubject() {
+        actionSubject.subscribe { action ->
+            when (action.type) {
+                ActionType.FILTERING -> {
+                    skinType = if (action.data as String != "all") action.data else null
+                    resetPage()
+                }
+                ActionType.SEARCH -> {
+                    keyword = if ((action.data as String).trim().isNotEmpty()) action.data else null
+                    resetPage()
+                }
+                ActionType.NEXT_PAGE -> pageNum += 1
+                ActionType.REFRESH -> resetPage()
+            }
+            getProductList(currentAction(action.type))
+        }.addTo(compositeDisposable)
+    }
+
+    private fun resetPage(){
+        pageNum = 1
+        products.clear()
+    }
+
+    private fun getProductList(appendProduct: (List<Product>) -> Unit) {
+        Log.d("getProductList", "getProductList is called")
         productDataSource.getProductList(skinType, pageNum, keyword)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                products = it
-            }.addTo(compositeDisposable)
+            .subscribe(
+                { appendProduct(it) },
+                {
+                    onLoadingModeChange.onNext(false)
+                    onPagingModeChange.onNext(false)
+                    onErrorSubject.onNext(it)
+                }
+            ).addTo(compositeDisposable)
     }
+
+    private val currentAction: (ActionType) -> (List<Product>) -> Unit = { actionType ->
+        { it ->
+            when (actionType) {
+                ActionType.NEXT_PAGE -> products = products.plus(it).toMutableList()
+                else ->{
+                    products = it.toMutableList()
+                }
+            }
+        }
+    }
+
+
 
     //    private fun cancleLoadMode() {
 //        isMoreLoad = false
@@ -92,7 +121,6 @@ class ProductViewModel(
 //        this.pageNum = 1
 //        return getProductList()
 //    }
-
 
 
 //    @SuppressLint("CheckResult")
