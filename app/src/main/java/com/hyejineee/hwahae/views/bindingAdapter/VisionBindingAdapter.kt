@@ -12,24 +12,6 @@ import com.hyejineee.hwahae.R
 import io.reactivex.subjects.Subject
 
 @SuppressLint("CheckResult")
-@BindingAdapter("loadingVisible")
-fun setVisible(view: View, isVisible: Subject<Boolean>) {
-    isVisible.subscribe {visible ->
-        when (view) {
-            is FrameLayout -> {
-                view.visibility = if(visible) View.VISIBLE else View.GONE
-                (view.parent as ViewGroup).findViewById<LinearLayout>(R.id.refresh_btn)?.visibility =
-                    View.GONE
-            }
-            else -> {
-                view.visibility = if(visible) View.GONE else View.VISIBLE
-                view.isClickable = false
-            }
-        }
-    }
-}
-
-@SuppressLint("CheckResult")
 @BindingAdapter("noItemNoticeVisible")
 fun setNoItemNoticeViewVisible(view: ViewGroup, isVisible: Subject<Boolean>) {
     isVisible.subscribe {visible ->
