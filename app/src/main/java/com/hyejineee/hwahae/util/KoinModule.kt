@@ -1,5 +1,7 @@
 package com.hyejineee.hwahae.util
 
+import com.hyejineee.hwahae.BaseSchedulers
+import com.hyejineee.hwahae.Scheduler
 import com.hyejineee.hwahae.datasource.ProductDataSource
 import com.hyejineee.hwahae.datasource.ProductRemoteDataSource
 import com.hyejineee.hwahae.datasource.APIService
@@ -37,17 +39,21 @@ fun getNetworkModule(baseUrl: String) = module {
     single<ProductDataSource> { ProductRemoteDataSource(get()) }
 }
 
+val androidScheduler = module {
+    single<BaseSchedulers> { Scheduler() }
+}
+
 val productViewModelModule = module {
-    viewModel { ProductViewModel(get()) }
+    viewModel { ProductViewModel(get(),get()) }
 }
 
 val productDetailViewModelModule = module {
     viewModel { ProductDetailViewModel(get()) }
 }
 
-
 val mModules = listOf(
     getNetworkModule("https://6uqljnm1pb.execute-api.ap-northeast-2.amazonaws.com"),
+    androidScheduler,
     productViewModelModule,
     productDetailViewModelModule
 )
