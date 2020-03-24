@@ -51,7 +51,6 @@ class ProductViewModel(
     private fun setSubscribeActionSubject() {
         actionSubject
             .subscribe{ action ->
-            Log.d("action", "actionType : ${action.type}")
             when (action.type) {
                 ActionType.FILTERING -> {
                     skinType = if (action.data as String != "all") action.data else null

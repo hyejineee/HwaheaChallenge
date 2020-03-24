@@ -29,7 +29,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val productAdapter = ProductAdapter { productId ->
         val dialog = ProductDetailDialog(
             this,
-            productId
+            productId,
+            productDetailViewModel
         )
 
         if (!dialog.isShowing) {

@@ -48,7 +48,7 @@ val productViewModelModule = module {
 }
 
 val productDetailViewModelModule = module {
-    viewModel { ProductDetailViewModel(get()) }
+    viewModel { ProductDetailViewModel(get(), get()) }
 }
 
 val mModules = listOf(

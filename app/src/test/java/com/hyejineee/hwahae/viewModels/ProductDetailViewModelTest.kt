@@ -1,5 +1,6 @@
 package com.hyejineee.hwahae.viewModels
 
+import com.hyejineee.hwahae.ActionType
 import com.hyejineee.hwahae.BaseSchedulers
 import com.hyejineee.hwahae.model.ProductDetail
 import com.hyejineee.hwahae.datasource.ProductDataSource
@@ -15,6 +16,7 @@ import org.mockito.Mockito
 internal class ProductDetailViewModelTest {
     private var productDataSource: ProductDataSource = Mockito.mock(ProductDataSource::class.java)
     private var scheduler: BaseSchedulers = Mockito.mock(BaseSchedulers::class.java)
+    private lateinit var viewModel:ProductDetailViewModel
 
     val productId = 1
     val product = ProductDetail(
@@ -28,21 +30,17 @@ internal class ProductDetailViewModelTest {
     fun setUp() {
         given(productDataSource.getProductDetail(productId))
             .willReturn(Observable.just(product))
+
         given(scheduler.io()).willReturn(Schedulers.single())
         given(scheduler.ui()).willReturn(Schedulers.single())
+
+        viewModel = ProductDetailViewModel(productDataSource, scheduler)
     }
 
-//    @Test
-//    fun getProductDetail() {
-//        val viewModel = ProductDetailViewModel(productDataSource, scheduler)
-//
-//        val testObserver: TestObserver<ProductDetail> = TestObserver()
-//
-//        viewModel.productDetailSubject.subscribe(testObserver)
-//
-//        viewModel.getProductDetail(productId)
-//
-//        testObserver.awaitCount(1)
-//        assertThat(testObserver.values().first()).isEqualTo(product)
-//    }
+    @Test
+    fun getProductDetail() {
+        viewModel.actionDispatch(ActionType.GET_DETAIL, productId)
+        val productDetail = viewModel.onProductDetailChange.blockingFirst()
+        assertThat(productDetail).isEqualTo(product)
+    }
 }
