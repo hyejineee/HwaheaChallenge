@@ -38,8 +38,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
-                    binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}">
+                    android:visibility="gone">
+<!--                    binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}">-->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/product_img_layout"
@@ -131,8 +131,8 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#95000000"
-                    binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}">
+                    android:background="#95000000">
+<!--                    binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}">-->
 
                     <include layout="@layout/loading_layout" />
                 </FrameLayout>
@@ -163,8 +163,8 @@
             android:paddingBottom="@dimen/text_top_botton_padding"
             android:text="구매하기"
             android:visibility="invisible"
-            app:cornerRadius="20dp"
-            binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}" />
+            app:cornerRadius="20dp"/>
+<!--            binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}" />-->
 
     </RelativeLayout>
 

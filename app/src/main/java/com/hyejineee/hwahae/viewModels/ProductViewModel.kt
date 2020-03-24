@@ -1,18 +1,18 @@
 package com.hyejineee.hwahae.viewModels
 
-import android.util.Log
 import com.hyejineee.hwahae.Action
 import com.hyejineee.hwahae.ActionType
 import com.hyejineee.hwahae.BaseSchedulers
 import com.hyejineee.hwahae.datasource.ProductDataSource
 import com.hyejineee.hwahae.model.Product
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 
 class ProductViewModel(
-    private val productDataSource: ProductDataSource, private val scheduler: BaseSchedulers
+    private val productDataSource: ProductDataSource, val scheduler: BaseSchedulers
 ) : BaseViewModel() {
 
     private val actionSubject: Subject<Action> = PublishSubject.create()
@@ -51,7 +51,7 @@ class ProductViewModel(
     }
 
     private fun setSubscribeActionSubject() {
-        actionSubject.subscribe { action ->
+        actionSubject.subscribe{ action ->
             when (action.type) {
                 ActionType.FILTERING -> {
                     skinType = if (action.data as String != "all") action.data else null
@@ -62,7 +62,7 @@ class ProductViewModel(
                     resetPage()
                 }
                 ActionType.NEXT_PAGE -> pageNum += 1
-                ActionType.REFRESH -> resetPage()
+                ActionType.DEFAULT_PRODUCTS -> resetPage()
             }
             getProductList(currentAction(action.type))
         }.addTo(compositeDisposable)
@@ -97,80 +97,4 @@ class ProductViewModel(
             }
         }
     }
-
-
-
-    //    private fun cancleLoadMode() {
-//        isMoreLoad = false
-//        isLoadingSubject.onNext(false)
-//    }
-
-//    @SuppressLint("CheckResult")
-//    fun increasePageNumber() {
-//        isMoreLoad = true
-//        pageNumberIncreaseSubject.onNext(Unit)
-//    }
-//
-//    fun selectSkinType(skinType: String) = skinTypeChangeSubject.onNext(skinType)
-//
-//    fun search(keyword: String) = searchChangeSubject.onNext(keyword)
-
-//    fun refresh(): Observable<List<Product>> {
-//        this.pageNum = 1
-//        return getProductList()
-//    }
-
-
-//    @SuppressLint("CheckResult")
-//    fun getProducts() {
-//        isLoadingSubject.onNext(true)
-//        getProductList()
-//            .subscribe({
-//                noItemSubject.onNext(it.isEmpty())
-//                products = it
-//                cancleLoadMode()
-//            }, {
-//                onErrorSubject.onNext(it)
-//                cancleLoadMode()
-//            })
-//    }
-
-//    @SuppressLint("CheckResult")
-//    fun setEvents() {
-//
-//            merge(
-//                skinTypeChangeSubject
-//                    .map { skinType = it },
-//                searchChangeSubject
-//                    .map { keyword = it }
-//            )
-//                .map { pageNum = 1 }
-//                .map { isLoadingSubject.onNext(true) }
-//                .flatMap { getProductList() }
-//                .subscribe({
-//                    noItemSubject.onNext(it.isEmpty())
-//                    products = it
-//                    cancleLoadMode()
-//                }, {
-//                    onErrorSubject.onNext(it)
-//                    cancleLoadMode()
-//                })
-//
-//
-//
-//            pageNumberIncreaseSubject
-//                .filter { products.isNotEmpty() }
-//                .map { pageNum += 1 }
-//                .flatMap { getProductList() }
-//                .subscribe({
-//                    products = products.plus(it)
-//                    cancleLoadMode()
-//                }, {
-//                    pageNum -= 1
-//                    onErrorSubject.onNext(it)
-//                    cancleLoadMode()
-//                })
-//
-//    }
-//
 }
