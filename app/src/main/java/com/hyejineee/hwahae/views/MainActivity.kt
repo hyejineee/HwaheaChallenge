@@ -1,6 +1,7 @@
 package com.hyejineee.hwahae.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -36,11 +37,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        productViewModel.actionDispatch(ActionType.DEFAULT_PRODUCTS, 0)
-    }
-
     override fun onStop() {
         super.onStop()
         compositeDisposable.clear()
@@ -69,6 +65,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     if (layoutManager.findLastCompletelyVisibleItemPosition()
                         == productAdapter.itemCount.minus(1)
                         && !productViewModel.onPagingModeChange.blockingFirst()
+                        && productAdapter.itemCount >= 20
                     ) {
                         productAdapter.startLoadingMode()
                         this.smoothScrollToPosition(productAdapter.itemCount - 1)
@@ -85,6 +82,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
         viewDataBinding.skinTypeSp.selectionEvents()
+            .skipInitialValue()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 val selectedItem = it.view.selectedItem.toString()
@@ -93,6 +91,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }.addTo(compositeDisposable)
 
         viewDataBinding.searchEditTv.textChangeEvents()
+            .skipInitialValue()
             .debounce(1000, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -105,7 +104,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         productViewModel.onProductChange
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { productAdapter.products = it }
+            .subscribe {
+                if (it.isEmpty()) {
+                    Toast.makeText(this, "데이터가 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+                productAdapter.products = it
+            }
             .addTo(compositeDisposable)
 
         productViewModel.onPagingModeChange

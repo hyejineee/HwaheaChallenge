@@ -1,5 +1,6 @@
 package com.hyejineee.hwahae.viewModels
 
+import android.util.Log
 import com.hyejineee.hwahae.Action
 import com.hyejineee.hwahae.ActionType
 import com.hyejineee.hwahae.BaseSchedulers
@@ -35,9 +36,6 @@ class ProductViewModel(
     val onLoadingModeChange: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
     val onPagingModeChange: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
 
-    val noItemSubject: Subject<Boolean> = PublishSubject.create()
-    var isMoreLoad: Boolean = false
-
     init {
         setSubscribeActionSubject()
     }
@@ -51,7 +49,9 @@ class ProductViewModel(
     }
 
     private fun setSubscribeActionSubject() {
-        actionSubject.subscribe{ action ->
+        actionSubject
+            .subscribe{ action ->
+            Log.d("action", "actionType : ${action.type}")
             when (action.type) {
                 ActionType.FILTERING -> {
                     skinType = if (action.data as String != "all") action.data else null
