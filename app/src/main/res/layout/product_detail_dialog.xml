@@ -8,11 +8,6 @@
         <variable
             name="product"
             type="com.hyejineee.hwahae.model.ProductDetail" />
-
-        <variable
-            name="product_detail_view_model"
-            type="com.hyejineee.hwahae.viewModels.ProductDetailViewModel" />
-
         <variable
             name="dialog"
             type="com.hyejineee.hwahae.views.ProductDetailDialog" />
@@ -36,10 +31,10 @@
                 android:layout_height="wrap_content">
 
                 <RelativeLayout
+                    android:id="@+id/detail_box"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="gone">
-<!--                    binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}">-->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/product_img_layout"
@@ -129,10 +124,10 @@
                 </LinearLayout>
 
                 <FrameLayout
+                    android:id="@+id/loading_notice_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#95000000">
-<!--                    binding:loadingVisible="@{product_detail_view_model.isLoadingSubject}">-->
 
                     <include layout="@layout/loading_layout" />
                 </FrameLayout>
@@ -147,7 +142,7 @@
             android:layout_margin="@dimen/text_top_botton_padding"
             android:layout_alignParentEnd="true"
             android:background="@drawable/ic_cancel"
-            android:onClick="@{()->dialog.closeDialog()}"
+            android:onClick="@{_->dialog.closeDialog()}"
             />
 
         <com.google.android.material.button.MaterialButton

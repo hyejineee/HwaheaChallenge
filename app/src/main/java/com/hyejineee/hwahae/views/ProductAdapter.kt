@@ -12,10 +12,10 @@ class ProductAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var products = listOf<Product>()
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     val LOADING_ITEM = 0
     val PRODUCT_ITEM = 1
@@ -24,7 +24,7 @@ class ProductAdapter(
         RecyclerView.ViewHolder(gridItemBinding.root) {
         fun bind(item: Product) {
             gridItemBinding.item = item
-            gridItemBinding.root.setOnClickListener { clickListener }
+            gridItemBinding.root.setOnClickListener { clickListener(item.id) }
             gridItemBinding.executePendingBindings()
         }
     }

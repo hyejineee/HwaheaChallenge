@@ -12,16 +12,21 @@ import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil.inflate
+import com.hyejineee.hwahae.ActionType
 import com.hyejineee.hwahae.R
 import com.hyejineee.hwahae.databinding.ProductDetailDialogBinding
 import com.hyejineee.hwahae.viewModels.ProductDetailViewModel
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 
 class ProductDetailDialog(
     context: Context,
-    val product_id: Int
+    private val product_id: Int,
+    private val viewModel: ProductDetailViewModel
 ) : Dialog(context) {
 
     private lateinit var viewDataBinding: ProductDetailDialogBinding
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,11 +39,8 @@ class ProductDetailDialog(
         initSubscribe()
 
         viewDataBinding.dialog = this
-//        viewDataBinding.productDetailViewModel = viewModel
-    }
 
-    fun closeDialog() {
-        this.dismiss()
+        viewModel.actionDispatch(ActionType.GET_DETAIL, product_id)
     }
 
     private fun initView() {
@@ -54,28 +56,37 @@ class ProductDetailDialog(
         window?.attributes = param
         setCanceledOnTouchOutside(true)
 
-
         viewDataBinding.buyButton
             .startAnimation(AnimationUtils.loadAnimation(context, R.anim.button_up))
 
     }
 
     private fun initSubscribe() {
-//        viewModel.getProductDetail(product_id)
-//        viewModel.productDetailSubject.subscribe {
-//            viewDataBinding.productDetailLayout.visibility = View.VISIBLE
-//            viewDataBinding.product = it
-//        }
-//        viewModel.onErrorSubject.subscribe {
-//            viewDataBinding.refreshBtn.visibility = View.VISIBLE
-//            viewDataBinding.productDetailLayout.visibility = View.GONE
-//            viewDataBinding.buyButton.visibility = View.GONE
-//            Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
-//        }
+        viewModel.onProductDetailChange
+            .subscribe {
+            viewDataBinding.productDetailLayout.visibility = View.VISIBLE
+            viewDataBinding.product = it
+        }.addTo(compositeDisposable)
+
+        viewModel.onLoadingModeChange
+            .subscribe{
+                viewDataBinding.detailBox.visibility = if(it) View.GONE else View.VISIBLE
+                viewDataBinding.loadingNoticeView.visibility = if(it) View.VISIBLE else View.GONE
+                viewDataBinding.buyButton.visibility = if(it) View.GONE else View.VISIBLE
+            }.addTo(compositeDisposable)
+
+        viewModel.onErrorSubject.subscribe {
+            viewDataBinding.refreshBtn.visibility = View.VISIBLE
+            viewDataBinding.productDetailLayout.visibility = View.GONE
+            viewDataBinding.buyButton.visibility = View.GONE
+            Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+        }.addTo(compositeDisposable)
     }
 
     fun reRequest() {
-//        viewModel.getProductDetail(product_id)
+        viewModel.actionDispatch(ActionType.GET_DETAIL, product_id)
         viewDataBinding.refreshBtn.visibility = View.GONE
     }
+
+    fun closeDialog() = this.dismiss()
 }
