@@ -1,18 +1,14 @@
 package com.hyejineee.hwahae
 
-import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ActivityScenario.ActivityAction
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.IdlingResource
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.hyejineee.hwahae.views.MainActivity
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,5 +36,13 @@ class ViewProductListTest {
 
         Thread.sleep(1000)
         onView(withText("엔오에이치제이 코리안 에스테틱 마스크 포어버블")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun viewSearchProductList(){
+        onView(withId(R.id.search_edit_tv)).perform(typeText("14g"))
+
+        Thread.sleep(1000)
+        onView(withText("데이셀 피부수호 클린 프로젝트 쿠션 14g")).check(matches(isDisplayed()))
     }
 }

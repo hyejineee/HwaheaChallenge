@@ -1,7 +1,7 @@
 package com.hyejineee.hwahae.viewModels
 
 import com.hyejineee.hwahae.ActionType
-import com.hyejineee.hwahae.Scheduler
+import com.hyejineee.hwahae.BaseSchedulers
 import com.hyejineee.hwahae.datasource.ProductDataSource
 import com.hyejineee.hwahae.model.Product
 import io.reactivex.Observable
@@ -15,7 +15,8 @@ import org.mockito.Mockito.mock
 
 internal class ProductViewModelTest {
     private var productDataSource: ProductDataSource = mock(ProductDataSource::class.java)
-    private var scheduler: Scheduler = mock(Scheduler::class.java)
+    private var scheduler: BaseSchedulers = mock(BaseSchedulers::class.java)
+
     private lateinit var viewModel: ProductViewModel
     private val mockProducts = listOf(
         Product(
@@ -40,19 +41,24 @@ internal class ProductViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        viewModel = ProductViewModel(productDataSource,scheduler)
-        given(productDataSource.getProductList(null, 1, null))
+        given(scheduler.io()).willReturn(Schedulers.single())
+        given(scheduler.ui()).willReturn(Schedulers.single())
+
+        given(productDataSource.getProductList(any(), any(), any()))
             .willReturn(Observable.just(mockProducts))
 
         given(productDataSource.getProductList("sensitive", 1, null))
             .willReturn(Observable.just(mockProducts.filter { it.sensitive_score ==100 }))
 
-        given(scheduler.io()).willReturn(Schedulers.single())
-        given(scheduler.ui()).willReturn(Schedulers.single())
+        given(productDataSource.getProductList(null, 1, "플라멜엠디"))
+            .willReturn(Observable.just(mockProducts.filter { it.title == "플라멜엠디 밀크러스트필 마일드 워시오프 앰플 5ml x 2개" }))
+
+        viewModel = ProductViewModel(productDataSource,scheduler)
     }
 
     @Test
     fun `다음 페이지 제품 리스트 가져오기 테스트`(){
+
         val originPageNum = viewModel.pageNum
         val originProductsSize = viewModel.products.size
 
@@ -65,7 +71,7 @@ internal class ProductViewModelTest {
     }
 
     @Test
-    fun `스킨 타입 필터 지정 테스트`(){
+    fun `해당 스킨 타입의 제품만 가져오기 테스트`(){
 
         viewModel.actionDispatch(ActionType.FILTERING, "sensitive")
 
@@ -74,5 +80,16 @@ internal class ProductViewModelTest {
         assertThat(viewModel.pageNum).isEqualTo(1)
         assertThat(products.size).isEqualTo(1)
         assertThat(products).isEqualTo(mockProducts.filter { it.sensitive_score == 100 })
+    }
+
+    @Test
+    fun `검색 키워드가 포함된 제품만 가져오기 테스트 `(){
+        viewModel.actionDispatch(ActionType.SEARCH, "플라멜엠디")
+
+        val products = viewModel.onProductChange.blockingFirst()
+
+        assertThat(viewModel.pageNum).isEqualTo(1)
+        assertThat(products.size).isEqualTo(1)
+        assertThat(products).isEqualTo(mockProducts.filter { it.title == "플라멜엠디 밀크러스트필 마일드 워시오프 앰플 5ml x 2개" })
     }
 }
