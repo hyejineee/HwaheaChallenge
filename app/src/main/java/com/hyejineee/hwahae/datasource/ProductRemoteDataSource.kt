@@ -1,6 +1,5 @@
 package com.hyejineee.hwahae.datasource
 
-import com.hyejineee.hwahae.datasource.ServerMessageCode.BodyMessage
 import com.hyejineee.hwahae.model.Product
 import com.hyejineee.hwahae.model.ProductDetail
 import io.reactivex.Observable
