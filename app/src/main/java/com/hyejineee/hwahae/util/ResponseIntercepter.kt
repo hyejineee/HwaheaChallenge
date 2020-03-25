@@ -1,5 +1,6 @@
 package com.hyejineee.hwahae.util
 
+import com.hyejineee.hwahae.datasource.ServerMessageCode.BodyMessage
 import com.hyejineee.hwahae.datasource.ServerMessageCode.StatusCode
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -11,26 +12,39 @@ class ResponseInterceptor : Interceptor {
         chain.proceed(chain.request()).let {
 
             val responseStr = it.body()?.string()
+            val newResponse = it.newBuilder()
+            val toJson = JSONObject(responseStr)
 
-            val newResponse = it.newBuilder().apply {
-                val toJson = JSONObject(responseStr)
+            when(toJson.get("statusCode") ) {
+                StatusCode.STATUS_SUCCESS.code -> {
+                    newResponse.code(200)
+                    newResponse.body(
+                        ResponseBody.create(
+                            it.body()?.contentType(),
+                            responseStr
+                        )
+                    )
+                }
 
-                when (toJson.getInt("statusCode")) {
-                    StatusCode.STATUS_SUCCESS.code ->
-                        this.code(200)
+                else -> {
+                    when {
+                        toJson.get("body").toString()
+                            .contains(BodyMessage.NO_DATA.message) ->{
+                            newResponse.code(200)
+                            newResponse.body(
+                                ResponseBody.create(
+                                it.body()?.contentType(),
+                                    "{\n" +
+                                            "  \"statusCode\": 200,\n" +
+                                            "  \"body\": []\n" +
+                                            "}"
+                            ))
+                        }
 
-                    else -> {
-                        this.code(400)
-                        this.message(toJson["body"].toString())
+                        else -> newResponse.code(400)
                     }
+                    newResponse.message(toJson.get("body").toString())
                 }
             }
-
-            newResponse.body(
-                ResponseBody.create(
-                    it.body()?.contentType(),
-                    responseStr
-                )
-            )
         }.build()
 }
