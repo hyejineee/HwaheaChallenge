@@ -1,13 +1,11 @@
 package com.hyejineee.hwahae.viewModels
 
-import android.util.Log
 import com.hyejineee.hwahae.Action
 import com.hyejineee.hwahae.ActionType
-import com.hyejineee.hwahae.BaseSchedulers
+import com.hyejineee.hwahae.util.BaseSchedulers
 import com.hyejineee.hwahae.datasource.ProductDataSource
 import com.hyejineee.hwahae.model.Product
 import io.reactivex.rxkotlin.addTo
-import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject

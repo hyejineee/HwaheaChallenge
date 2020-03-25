@@ -1,7 +1,7 @@
 package com.hyejineee.hwahae.viewModels
 
 import com.hyejineee.hwahae.ActionType
-import com.hyejineee.hwahae.BaseSchedulers
+import com.hyejineee.hwahae.util.BaseSchedulers
 import com.hyejineee.hwahae.datasource.ProductDataSource
 import com.hyejineee.hwahae.model.Product
 import io.reactivex.Observable
@@ -15,7 +15,8 @@ import org.mockito.Mockito.mock
 
 internal class ProductViewModelTest {
     private var productDataSource: ProductDataSource = mock(ProductDataSource::class.java)
-    private var scheduler: BaseSchedulers = mock(BaseSchedulers::class.java)
+    private var scheduler: BaseSchedulers = mock(
+        BaseSchedulers::class.java)
 
     private lateinit var viewModel: ProductViewModel
     private val mockProducts = listOf(

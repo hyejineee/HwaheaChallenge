@@ -1,7 +1,5 @@
 package com.hyejineee.hwahae.util
 
-import com.hyejineee.hwahae.BaseSchedulers
-import com.hyejineee.hwahae.Scheduler
 import com.hyejineee.hwahae.datasource.ProductDataSource
 import com.hyejineee.hwahae.datasource.ProductRemoteDataSource
 import com.hyejineee.hwahae.datasource.APIService

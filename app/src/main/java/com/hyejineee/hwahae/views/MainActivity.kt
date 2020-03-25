@@ -1,7 +1,5 @@
 package com.hyejineee.hwahae.views
 
-import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -143,6 +141,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         viewDataBinding.refreshBtn.visibility = View.GONE
         viewDataBinding.itemGridView.visibility = View.VISIBLE
     }
-
-
 }

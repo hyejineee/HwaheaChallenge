@@ -1,4 +1,4 @@
-package com.hyejineee.hwahae
+package com.hyejineee.hwahae.util
 
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -1,11 +1,10 @@
 package com.hyejineee.hwahae.viewModels
 
 import com.hyejineee.hwahae.ActionType
-import com.hyejineee.hwahae.BaseSchedulers
+import com.hyejineee.hwahae.util.BaseSchedulers
 import com.hyejineee.hwahae.model.ProductDetail
 import com.hyejineee.hwahae.datasource.ProductDataSource
 import io.reactivex.Observable
-import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.Schedulers
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -15,7 +14,8 @@ import org.mockito.Mockito
 
 internal class ProductDetailViewModelTest {
     private var productDataSource: ProductDataSource = Mockito.mock(ProductDataSource::class.java)
-    private var scheduler: BaseSchedulers = Mockito.mock(BaseSchedulers::class.java)
+    private var scheduler: BaseSchedulers = Mockito.mock(
+        BaseSchedulers::class.java)
     private lateinit var viewModel:ProductDetailViewModel
 
     val productId = 1

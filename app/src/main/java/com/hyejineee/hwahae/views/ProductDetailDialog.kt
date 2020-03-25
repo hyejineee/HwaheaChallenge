@@ -32,7 +32,8 @@ class ProductDetailDialog(
         super.onCreate(savedInstanceState)
 
         viewDataBinding = inflate(
-                LayoutInflater.from(context), R.layout.product_detail_dialog, null, false)
+            LayoutInflater.from(context), R.layout.product_detail_dialog, null, false
+        )
         setContentView(viewDataBinding.root)
 
         initView()
@@ -41,6 +42,11 @@ class ProductDetailDialog(
         viewDataBinding.dialog = this
 
         viewModel.actionDispatch(ActionType.GET_DETAIL, product_id)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.clear()
     }
 
     private fun initView() {
@@ -64,15 +70,15 @@ class ProductDetailDialog(
     private fun initSubscribe() {
         viewModel.onProductDetailChange
             .subscribe {
-            viewDataBinding.productDetailLayout.visibility = View.VISIBLE
-            viewDataBinding.product = it
-        }.addTo(compositeDisposable)
+                viewDataBinding.productDetailLayout.visibility = View.VISIBLE
+                viewDataBinding.product = it
+            }.addTo(compositeDisposable)
 
         viewModel.onLoadingModeChange
-            .subscribe{
-                viewDataBinding.detailBox.visibility = if(it) View.GONE else View.VISIBLE
-                viewDataBinding.loadingNoticeView.visibility = if(it) View.VISIBLE else View.GONE
-                viewDataBinding.buyButton.visibility = if(it) View.GONE else View.VISIBLE
+            .subscribe {
+                viewDataBinding.detailBox.visibility = if (it) View.GONE else View.VISIBLE
+                viewDataBinding.loadingNoticeView.visibility = if (it) View.VISIBLE else View.GONE
+                viewDataBinding.buyButton.visibility = if (it) View.GONE else View.VISIBLE
             }.addTo(compositeDisposable)
 
         viewModel.onErrorSubject.subscribe {

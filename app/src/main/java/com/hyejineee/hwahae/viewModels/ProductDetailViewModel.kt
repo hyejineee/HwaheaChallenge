@@ -1,15 +1,11 @@
 package com.hyejineee.hwahae.viewModels
 
-import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModel
 import com.hyejineee.hwahae.Action
 import com.hyejineee.hwahae.ActionType
-import com.hyejineee.hwahae.BaseSchedulers
-import com.hyejineee.hwahae.model.ProductDetail
+import com.hyejineee.hwahae.util.BaseSchedulers
 import com.hyejineee.hwahae.datasource.ProductDataSource
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.hyejineee.hwahae.model.ProductDetail
 import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
@@ -46,7 +42,7 @@ class ProductDetailViewModel(
         }.addTo(compositeDisposable)
     }
 
-    fun getProductDetail(productId: Int) {
+    private fun getProductDetail(productId: Int) {
         productDataSource.getProductDetail(productId)
             .subscribeOn(schedulers.io())
             .observeOn(schedulers.ui())
