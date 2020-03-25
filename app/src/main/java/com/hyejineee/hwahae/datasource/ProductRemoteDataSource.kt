@@ -1,14 +1,9 @@
 package com.hyejineee.hwahae.datasource
 
-import android.util.Log
 import com.hyejineee.hwahae.datasource.ServerMessageCode.BodyMessage
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.hyejineee.hwahae.model.Product
 import com.hyejineee.hwahae.model.ProductDetail
-import com.hyejineee.hwahae.datasource.ServerMessageCode.StatusCode
 import io.reactivex.Observable
-import java.lang.reflect.Type
 
 class ProductRemoteDataSource(val APIService: APIService) : ProductDataSource {
 
@@ -24,15 +19,15 @@ class ProductRemoteDataSource(val APIService: APIService) : ProductDataSource {
                     .execute()
 
                 when (r.isSuccessful) {
-                    true -> {
-                        when{
+                    false -> observer.onError(Exception(r.message()))
+                    else -> {
+                        when {
                             r.message().contains(BodyMessage.NO_DATA.message) ->
                                 observer.onNext(emptyList())
-                            else ->  observer.onNext(r.body()?.body ?: emptyList())
+                            else -> observer.onNext(r.body()?.body ?: emptyList())
                         }
                         observer.onComplete()
                     }
-                    else -> observer.onError(Exception(r.message()))
                 }
             } catch (err: Throwable) {
                 if (!observer.isDisposed) {
