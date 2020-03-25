@@ -19,15 +19,13 @@ class ProductRemoteDataSource(val APIService: APIService) : ProductDataSource {
                     .execute()
 
                 when (r.isSuccessful) {
-                    false -> observer.onError(Exception(r.message()))
-                    else -> {
-                        when {
-                            r.message().contains(BodyMessage.NO_DATA.message) ->
-                                observer.onNext(emptyList())
-                            else -> observer.onNext(r.body()?.body ?: emptyList())
+                    true ->
+                        observer.let {
+                            it.onNext(r.body()?.body ?: emptyList())
+                            it.onComplete()
                         }
-                        observer.onComplete()
-                    }
+                    else ->
+                        observer.onError(Exception(r.message()))
                 }
             } catch (err: Throwable) {
                 if (!observer.isDisposed) {
