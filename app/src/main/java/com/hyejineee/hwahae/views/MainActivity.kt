@@ -1,5 +1,6 @@
 package com.hyejineee.hwahae.views
 
+import android.content.res.Configuration
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -34,6 +35,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         if (!dialog.isShowing) {
             dialog.show()
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
     }
 
     override fun onStop() {
