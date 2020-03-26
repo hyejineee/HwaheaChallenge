@@ -1,6 +1,7 @@
 package com.hyejineee.hwahae.views
 
 import android.content.res.Configuration
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -41,8 +42,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         super.onConfigurationChanged(newConfig)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         compositeDisposable.clear()
     }
 
