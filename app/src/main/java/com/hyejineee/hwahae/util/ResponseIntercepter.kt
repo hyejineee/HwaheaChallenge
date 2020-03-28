@@ -30,7 +30,7 @@ class ResponseInterceptor : Interceptor {
                     when {
                         toJson.get("body").toString()
                             .contains(BodyMessage.NO_DATA.message) ->{
-                            newResponse.code(200)
+                            newResponse.code(204)
                             newResponse.body(
                                 ResponseBody.create(
                                 it.body()?.contentType(),
